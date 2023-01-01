@@ -1,0 +1,26 @@
+<configuration>
+        <property>
+          <name>fs.s3a.multiobjectdelete.enable</name>
+          <value>false</value>
+        </property>
+        <property>
+                <name>fs.s3a.impl</name>
+                <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
+        </property>
+        <property>
+                <name>fs.s3a.access.key</name>
+                <value>AKIARFFRVD65BLDHZDMD</value>
+        </property>
+        <property>
+                <name>fs.s3a.secret.key</name>
+                <value>FI8JHBwjM03SdpCdtHvA19koyQm9GG4C29CFCYpH</value>
+        </property>
+        <property>
+                <name>fs.s3a.connection.ssl.enabled</name>
+                <value>true</value>
+        </property>
+        <property>
+                <name>fs.s3a.endpoint</name>
+                <value>s3.eu-central-1.amazonaws.com</value>
+        </property>
+</configuration>
