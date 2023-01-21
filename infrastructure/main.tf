@@ -4,6 +4,11 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 4.16"
     }
+
+    archive = {
+      source  = "hashicorp/archive"
+      version = "~> 2.2.0"
+    }
   }
 
   required_version = ">= 1.2.0"
@@ -19,7 +24,23 @@ module "network" {
 }
 
 module "instance" {
-  source = "./instance"
+  source                       = "./instance"
   private_network_interface_id = module.network.private_network_interface_id
-  public_network_interface_id = module.network.public_network_interface_id
+  public_network_interface_id  = module.network.public_network_interface_id
+}
+
+module "lambda" {
+  source = "./lambda"
+
+  function = {
+    name    = "sendS3EventToIngestor"
+    path    = "./send-s3-event-to-ingestor.js"
+    handler = "sendS3EventToIngestor"
+  }
+
+  // TODO Get info from S3
+  bucket = {
+    name = "flume-ng-dev"
+    arn  = "arn:aws:s3:::flume-ng-dev"
+  }
 }

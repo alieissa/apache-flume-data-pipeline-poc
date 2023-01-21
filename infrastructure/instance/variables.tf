@@ -1,10 +1,10 @@
 variable "type" {
-  type = string
+  type    = string
   default = "t2.micro"
 }
 
 variable "ami" {
-  type = string
+  type    = string
   default = "ami-0039da1f3917fa8e3"
 }
 
