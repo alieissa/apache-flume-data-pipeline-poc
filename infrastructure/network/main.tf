@@ -69,33 +69,37 @@ resource "aws_route_table_association" "etl_rta" {
   route_table_id = aws_route_table.etl_rt.id
 }
 
+// Terraform documentation says only
+// from_port, to_port and protocol fields
+// are required, but cannot validate
+// a plan without the other fields
 resource "aws_security_group" "etl_ssh" {
   vpc_id = aws_vpc.etl.id
 
   egress = [
     {
+      from_port        = 0
+      to_port          = 0
+      protocol         = "-1"
       cidr_blocks      = ["0.0.0.0/0", ]
       description      = ""
-      from_port        = 0
       ipv6_cidr_blocks = []
       prefix_list_ids  = []
-      protocol         = "-1"
       security_groups  = []
       self             = false
-      to_port          = 0
     }
   ]
   ingress = [
     {
+      from_port        = 22
+      to_port          = 22
+      protocol         = "tcp"
       cidr_blocks      = ["0.0.0.0/0", ]
       description      = ""
-      from_port        = 22
       ipv6_cidr_blocks = []
       prefix_list_ids  = []
-      protocol         = "tcp"
       security_groups  = []
       self             = false
-      to_port          = 22
     }
   ]
 }

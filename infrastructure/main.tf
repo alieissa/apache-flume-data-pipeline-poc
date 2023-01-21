@@ -24,9 +24,11 @@ module "network" {
 }
 
 module "instance" {
-  source                       = "./instance"
-  private_network_interface_id = module.network.private_network_interface_id
-  public_network_interface_id  = module.network.public_network_interface_id
+  source = "./instance"
+  network_interface = {
+    private = module.network.network_interface.private
+    public  = module.network.network_interface.public
+  }
 }
 
 module "lambda" {
