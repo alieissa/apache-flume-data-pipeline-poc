@@ -16,4 +16,4 @@ RUN mv /app/pom.xml /apache-flume-1.11.0-bin/
 WORKDIR /apache-flume-1.11.0-bin
 RUN mvn process-sources
 
-ENTRYPOINT [ "flume-ng", "agent" , "-n", "dev", "-f", "/app/agent.dev.conf",  "--conf", "/app" ]
+ENTRYPOINT [ "flume-ng", "agent" , "-n", "agent", "-f", "/app/agent.conf",  "--conf", "/app" ]
