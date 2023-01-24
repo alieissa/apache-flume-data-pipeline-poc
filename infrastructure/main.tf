@@ -15,8 +15,9 @@ terraform {
 }
 
 provider "aws" {
-  region  = var.region
-  profile = "default"
+  region              = var.region
+  shared_config_files = [var.credentials_path]
+  profile             = "default"
 }
 
 module "network" {
@@ -24,11 +25,8 @@ module "network" {
 }
 
 module "instance" {
-  source = "./instance"
-  network_interface = {
-    private = module.network.network_interface.private
-    public  = module.network.network_interface.public
-  }
+  source            = "./instance"
+  network_interface = module.network.network_interface
 }
 
 module "lambda" {
@@ -36,8 +34,8 @@ module "lambda" {
 
   function = {
     name    = "sendS3EventToIngestor"
-    path    = "./send-s3-event-to-ingestor.js"
-    handler = "sendS3EventToIngestor"
+    path    = "./s3-event.js"
+    handler = "s3-event.handler"
   }
 
   // TODO Get info from S3

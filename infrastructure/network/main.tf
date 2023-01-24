@@ -7,35 +7,18 @@ resource "aws_vpc" "etl" {
   }
 }
 
-resource "aws_subnet" "etl_private" {
-  vpc_id     = aws_vpc.etl.id
-  cidr_block = var.private_cidr
-
-  tags = {
-    Name = "Data Ingestion - Private"
-  }
-}
-
-resource "aws_subnet" "etl_public" {
+resource "aws_subnet" "etl" {
   vpc_id                  = aws_vpc.etl.id
-  cidr_block              = var.public_cidr
+  cidr_block              = var.subnet_cidr
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "Data Ingestion - Public"
+    Name = "Data Ingestion"
   }
 }
 
-resource "aws_network_interface" "etl_private" {
-  subnet_id = aws_subnet.etl_private.id
-
-  tags = {
-    Name = "Data Ingestion Subnet Interface - Private"
-  }
-}
-
-resource "aws_network_interface" "etl_public" {
-  subnet_id = aws_subnet.etl_public.id
+resource "aws_network_interface" "etl" {
+  subnet_id = aws_subnet.etl.id
 
   security_groups = [aws_security_group.etl_ssh.id]
 
@@ -43,7 +26,7 @@ resource "aws_network_interface" "etl_public" {
     aws_security_group.etl_ssh
   ]
   tags = {
-    Name = "Data Ingestion Subnet Interface - Public"
+    Name = "Data Ingestion Subnet Interface"
   }
 }
 
@@ -65,7 +48,7 @@ resource "aws_route_table" "etl_rt" {
 }
 
 resource "aws_route_table_association" "etl_rta" {
-  subnet_id      = aws_subnet.etl_public.id
+  subnet_id      = aws_subnet.etl.id
   route_table_id = aws_route_table.etl_rt.id
 }
 

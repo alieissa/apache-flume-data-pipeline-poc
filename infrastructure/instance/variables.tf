@@ -9,8 +9,5 @@ variable "ami" {
 }
 
 variable "network_interface" {
-  type = object({
-    private = string
-    public  = string
-  })
+  type = string
 }
