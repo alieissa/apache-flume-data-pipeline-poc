@@ -3,8 +3,5 @@ output "id" {
 }
 
 output "network_interface" {
-  value = {
-    private = aws_network_interface.etl_private.id
-    public  = aws_network_interface.etl_public.id
-  }
+  value = aws_network_interface.etl.id
 }

@@ -22,7 +22,7 @@ data "archive_file" "lambda" {
 }
 
 resource "aws_lambda_function" "detect-ingest-event" {
-  runtime       = "nodejs12.x"
+  runtime       = "nodejs18.x"
   function_name = var.function.name
   filename      = data.archive_file.lambda.output_path
   handler       = var.function.handler
