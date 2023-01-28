@@ -10,11 +10,14 @@ env:
   S3_BUCKET: ${{ vars.S3_BUCKET }}
 
 jobs:
-  preview:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@master
+
+      - name: Setup .env
+        run: chmod +x ./.github/scripts/setup-env.sh && ./.github/scripts/setup-env.sh
 
       - name: Deploy
         run: chmod +x ./.github/scripts/s3-deploy.sh && ./.github/scripts/s3-deploy.sh
