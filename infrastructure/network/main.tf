@@ -21,6 +21,7 @@ resource "aws_network_interface" "etl" {
   subnet_id = aws_subnet.etl.id
 
   security_groups = [aws_security_group.etl_ssh.id]
+  private_ips     = [var.instance_ip]
 
   depends_on = [
     aws_security_group.etl_ssh
