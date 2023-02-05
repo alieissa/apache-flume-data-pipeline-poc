@@ -1,0 +1,55 @@
+# @format
+
+name: Build
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+env:
+  S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+  S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+  S3_REGION: ${{ vars.S3_REGION }}
+  S3_BUCKET: ${{ vars.S3_BUCKET }}
+jobs:
+  # Build Apache Flume agent image and upload to DockerHub
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/docker/login-action
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Insert access keys
+        run: chmod +x ./.github/scripts/build.sh && ./.github/scripts/build.sh
+        shell: bash
+
+      # https://github.com/docker/build-push-action
+      - name: Build and push to DockerHub
+        uses: docker/build-push-action@v3
+        with:
+          context: ./agent
+          push: true
+          tags: |
+            aeissa/etl-agent:${{ github.sha }}
+            aeissa/etl-agent:latest
+
+  # Send Apache Flume Agent code to S3
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Setup .env
+        run: chmod +x ./.github/scripts/setup-env.sh && ./.github/scripts/setup-env.sh
+
+      - name: Deploy
+        run: chmod +x ./.github/scripts/s3-deploy.sh && ./.github/scripts/s3-deploy.sh
