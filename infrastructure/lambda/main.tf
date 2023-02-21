@@ -27,12 +27,22 @@ resource "aws_lambda_function" "detect-ingest-event" {
   filename      = data.archive_file.lambda.output_path
   handler       = var.function.handler
 
+  vpc_config {
+    subnet_ids = var.vpc_config.subnet_ids
+    security_group_ids = var.vpc_config.security_group_ids
+  }
+
   role = aws_iam_role.lambda_exec.arn
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_policy" {
   role       = aws_iam_role.lambda_exec.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+resource "aws_iam_role_policy_attachment" "AWSLambdaVPCAccessExecutionRole" {
+    role       = aws_iam_role.lambda_exec.name
+    policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
 resource "aws_lambda_permission" "allow_bucket_access" {

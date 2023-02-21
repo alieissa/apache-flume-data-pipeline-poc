@@ -4,10 +4,9 @@
 import express from 'express'
 const getObjectKey = (req, res, next) => {
   // TODO Get key from body and add to req and call next()
-  console.log('get object key')
+  console.log('get object key', req.body)
   req.getS3ObjectKey = () => {}
   res.sendStatus(201)
-  next()
 }
 
 const router = express.Router()

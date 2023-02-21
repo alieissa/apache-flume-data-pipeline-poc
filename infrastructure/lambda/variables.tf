@@ -12,3 +12,10 @@ variable "bucket" {
     arn  = string
   })
 }
+
+variable "vpc_config" {
+  type = object({
+    subnet_ids = list(string)
+    security_group_ids = list(string)
+    })
+}
