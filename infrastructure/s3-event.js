@@ -19,23 +19,11 @@ exports.handler = function (obj) {
     Key: obj.Records[0].s3.object.key,
   }
 
-  const req = http.request(options, function (res) {
-    console.log('STATUS:', res.statusCode)
-    console.log('HEADERS:', JSON.stringify(res.headers))
-
-    res.on('data', function (chunk) {
-      console.log('BODY:', chunk)
+  http
+    .request(options)
+    .on('error', function (e) {
+      console.log('Problem with request:', e.message)
     })
-
-    res.on('end', function () {
-      console.log('No more data in response.')
-    })
-  })
-
-  req.on('error', function (e) {
-    console.log('Problem with request:', e.message)
-  })
-
-  req.write(JSON.stringify(objData))
-  req.end()
+    .write(JSON.stringify(objData))
+    .end()
 }
