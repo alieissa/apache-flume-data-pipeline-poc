@@ -25,6 +25,8 @@ module "network" {
 }
 
 module "instance" {
+  // Custom AMI that has server code and nodejs installed
+  ami               = "ami-05bc9eff26b996ebd"
   source            = "./instance"
   network_interface = module.network.network_interface
 }
@@ -45,7 +47,7 @@ module "lambda" {
   }
 
   vpc_config = {
-    subnet_ids = [ module.network.subnet_id ]
-    security_group_ids = [ module.network.security_group_id ]
+    subnet_ids         = [module.network.subnet_id]
+    security_group_ids = [module.network.security_group_id]
   }
 }
