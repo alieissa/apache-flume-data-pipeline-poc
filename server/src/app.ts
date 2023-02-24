@@ -1,11 +1,10 @@
 /** @format */
 
 import express from 'express'
-import getObjectFromS3 from './get-object-from-s3'
-import indexRouter from './routes'
+import getObjectFromS3RouteHandler from './get-object-from-s3'
 
 const app = express()
+
 app.use(express.json())
-app.use('/', indexRouter)
-app.use(getObjectFromS3)
+app.use('/', getObjectFromS3RouteHandler)
 export default app

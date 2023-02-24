@@ -43,4 +43,9 @@ module "lambda" {
     name = "flume-ng-dev"
     arn  = "arn:aws:s3:::flume-ng-dev"
   }
+
+  vpc_config = {
+    subnet_ids = [ module.network.subnet_id ]
+    security_group_ids = [ module.network.security_group_id ]
+  }
 }

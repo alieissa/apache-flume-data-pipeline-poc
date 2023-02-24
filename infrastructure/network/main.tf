@@ -20,11 +20,11 @@ resource "aws_subnet" "etl" {
 resource "aws_network_interface" "etl" {
   subnet_id = aws_subnet.etl.id
 
-  security_groups = [aws_security_group.etl_ssh.id]
+  security_groups = [aws_security_group.etl.id]
   private_ips     = [var.instance_ip]
 
   depends_on = [
-    aws_security_group.etl_ssh
+    aws_security_group.etl
   ]
   tags = {
     Name = "Data Ingestion Subnet Interface"
@@ -57,7 +57,7 @@ resource "aws_route_table_association" "etl_rta" {
 // from_port, to_port and protocol fields
 // are required, but cannot validate
 // a plan without the other fields
-resource "aws_security_group" "etl_ssh" {
+resource "aws_security_group" "etl" {
   vpc_id = aws_vpc.etl.id
 
   egress = [
@@ -77,6 +77,17 @@ resource "aws_security_group" "etl_ssh" {
     {
       from_port        = 22
       to_port          = 22
+      protocol         = "tcp"
+      cidr_blocks      = ["0.0.0.0/0", ]
+      description      = ""
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      security_groups  = []
+      self             = false
+    },
+    {
+      from_port        = 3000
+      to_port          = 3000
       protocol         = "tcp"
       cidr_blocks      = ["0.0.0.0/0", ]
       description      = ""

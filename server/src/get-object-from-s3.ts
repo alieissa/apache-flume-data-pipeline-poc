@@ -1,8 +1,10 @@
 /** @format */
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import dotenv from 'dotenv'
-
+import express from 'express'
 dotenv.config()
+
+const router = express.Router()
 
 const client = new S3Client({
   region: process.env.S3_REGION,
@@ -18,17 +20,9 @@ const client = new S3Client({
  * our uploaded had hit every point
  */
 const getObjectFromS3 = (req, res) => {
-  const command = new GetObjectCommand(req.body)
-  client
-    .send(command)
-    .then((response) => {
-      console.log(response)
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-
+  client.send(new GetObjectCommand(req.body))
+  console.log('Attempted to retrieve', JSON.stringify(req.body))
   res.sendStatus(200)
 }
-
-export default getObjectFromS3
+router.post('/s3-object', getObjectFromS3)
+export default router
