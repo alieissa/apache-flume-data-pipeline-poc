@@ -9,11 +9,11 @@
         </property>
         <property>
                 <name>fs.s3a.access.key</name>
-                <value>AKIARFFRVD65BLDHZDMD</value>
+                <value><S3_ACCESS_KEY></value>
         </property>
         <property>
                 <name>fs.s3a.secret.key</name>
-                <value>FI8JHBwjM03SdpCdtHvA19koyQm9GG4C29CFCYpH</value>
+                <value><S3_SECRET_KEY></value>
         </property>
         <property>
                 <name>fs.s3a.connection.ssl.enabled</name>
