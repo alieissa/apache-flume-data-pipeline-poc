@@ -39,17 +39,3 @@ jobs:
           tags: |
             aeissa/etl-agent:${{ github.sha }}
             aeissa/etl-agent:latest
-
-  # Send Apache Flume Agent code to S3
-  deploy:
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
-
-      - name: Setup .env
-        run: chmod +x ./.github/scripts/setup-env.sh && ./.github/scripts/setup-env.sh
-
-      - name: Deploy
-        run: chmod +x ./.github/scripts/s3-deploy.sh && ./.github/scripts/s3-deploy.sh
